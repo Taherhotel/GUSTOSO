@@ -137,6 +137,24 @@
             const password = document.getElementById('password').value;
             const errorMessage = document.getElementById('errorMessage');
 
+            // Email validation
+            const emailRegex = /^[a-zA-Z][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailRegex.test(email)) {
+                errorMessage.textContent = 'Email must start with a letter and be in a valid format (e.g., user@example.com)';
+                errorMessage.style.display = 'block';
+                return;
+            }
+
+            // Specific Gmail validation if it's a Gmail address
+            if (email.toLowerCase().includes('@gmail')) {
+                const gmailRegex = /^[a-zA-Z][a-zA-Z0-9._%+-]*@gmail\.com$/;
+                if (!gmailRegex.test(email)) {
+                    errorMessage.textContent = 'Invalid Gmail format. Use format: example@gmail.com (must start with a letter)';
+                    errorMessage.style.display = 'block';
+                    return;
+                }
+            }
+
             try {
                 const response = await fetch('http://localhost:8080/api/auth/login', {
                     method: 'POST',
